@@ -12,6 +12,7 @@ import { Tween } from 'cc';
 import { HunterMager } from './HunterMager';
 import { SkeletalAnimation } from 'cc';
 import { isValid } from 'cc';
+import { EVENT_TYPE, IEvent } from '../tools/CustomEvent';
 
 const { ccclass, property } = _decorator;
 
@@ -43,7 +44,10 @@ export class HunterController extends Component {
         this.uio = this.hp.getComponent(UIOpacity);
         this.hpbar = this.hp.getChildByName("Bar").getComponent(Sprite);
 
-        this.playAni(HunterState.IDLE)
+        IEvent.on(EVENT_TYPE.GAME_OVER, (() => {
+            this.playAni(HunterState.IDLE);
+        }), this);
+        // this.playAni(HunterState.IDLE)
     }
 
     start() {
@@ -53,7 +57,8 @@ export class HunterController extends Component {
 
     update(deltaTime: number) {
         // if (!this.currentTarget || !isValid(this.currentTarget))
-        if (this.state == HunterState.IDLE || this.state == HunterState.RUN) {
+        // if (this.state == HunterState.IDLE || this.state == HunterState.RUN) {
+        if (this.state == HunterState.RUN) {
 
             // 优先移动到设定的目标点
             if (this._Target) {
@@ -128,7 +133,10 @@ export class HunterController extends Component {
         this.hpbar.fillRange = this.currentHP / HunterInfo.HP;
 
         if (this.currentHP <= 0) {
-            HunterMager.instance.recycleHunter(this.node);
+            this.playAni(HunterState.DIE);
+            this.ani.once(SkeletalAnimation.EventType.FINISHED, (() => {
+                HunterMager.instance.recycleHunter(this.node);
+            }));
         }
         if (this.hpTween) {
             this.hpTween.stop();

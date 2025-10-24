@@ -24,6 +24,7 @@ export class Zombie extends Component {
     @property(Node) hp: Node = null;
     @property(SkeletalAnimation) ske: SkeletalAnimation = null;
     @property(CapsuleCollider) capsuleCollider: CapsuleCollider = null;
+    @property(Node) tx: Node = null;//特效
 
     private hpbar: Sprite = null;
     private uio: UIOpacity = null;
@@ -38,11 +39,16 @@ export class Zombie extends Component {
     protected onLoad(): void {
         this.hpbar = this.hp.getChildByName("Bar").getComponent(Sprite);
         this.uio = this.hp.getComponent(UIOpacity);
-        this.playAni(ZombieState.Run);
+        this.tx.active = false;
+
+        IEvent.on(EVENT_TYPE.GAME_OVER, (() => {
+            this.playAni(ZombieState.Idle);
+        }), this);
     }
 
     protected start(): void {
         this.capsuleCollider.on('onTriggerEnter', this.onTriggerEnter, this);
+        this.playAni(ZombieState.Run);
     }
 
     protected update(dt: number): void {
@@ -60,7 +66,7 @@ export class Zombie extends Component {
     private onTriggerEnter(event: ICollisionEvent) {
         if (event.otherCollider.getGroup() === ColliderGroup.Building ||
             event.otherCollider.getGroup() === ColliderGroup.Hunter) {
-            this.state = ZombieState.Attack;
+            // this.state = ZombieState.Attack;
             this._attackTarget = event.otherCollider.node;
             this.capsuleCollider.enabled = false;
 
@@ -85,7 +91,7 @@ export class Zombie extends Component {
             this.playAni(attackAniName);
 
             this.ske.once(SkeletalAnimation.EventType.FINISHED, (() => {
-                this.state = ZombieState.Run;
+                // this.state = ZombieState.Run;
                 // this._attackTarget = null;
                 this.capsuleCollider.enabled = true;
                 this.playAni(ZombieState.Attack);
@@ -106,7 +112,8 @@ export class Zombie extends Component {
 
     private move(dt: number) {
         if (!this._data) return;
-        if (this.state == ZombieState.Run || this.state == ZombieState.Idle) {
+        // if (this.state == ZombieState.Run || this.state == ZombieState.Idle) {
+        if (this.state == ZombieState.Run) {
 
             const currentPosition = this.node.worldPosition;
             let targetPosition: Vec3 = null;
@@ -148,15 +155,15 @@ export class Zombie extends Component {
             this.hpbar.fillRange = this._hp / this._data.HP;
 
             if (this._hp <= 0) {
-                this.state = ZombieState.Die;
+                this.hp.active = false;
                 this.capsuleCollider.enabled = false;
 
-                const requstBody = new ResquetBody(RESOURCE_TYPE.MEAT, { pos: this.node.worldPosition.clone(), meat: this._data.Meat })
-                IEvent.emit(EVENT_TYPE.DROP_RESOURCE, requstBody)
-
-                this.scheduleOnce(() => {
+                this.playAni(ZombieState.Die);
+                this.ske.once(SkeletalAnimation.EventType.FINISHED, (() => {
+                    const requstBody = new ResquetBody(RESOURCE_TYPE.MEAT, { pos: this.node.worldPosition.clone(), meat: this._data.Meat })
+                    IEvent.emit(EVENT_TYPE.DROP_RESOURCE, requstBody);
                     IEvent.emit(EVENT_TYPE.ZOMBIE_DIED, this.node, this.type);
-                }, 0)
+                }));
             }
 
             if (this.hpTween) {

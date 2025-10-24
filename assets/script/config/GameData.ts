@@ -1,7 +1,3 @@
-/**
- * A个小麦=B个麦垛
- * 1个麦垛=C个金币
- */
 export const GameInfo = {
     A: 5,
     B: 1,
@@ -19,19 +15,19 @@ export const GameInfo = {
  */
 export const ZombieInfo = {
     First: 10,   //第一波
-    Second: 100, //第二波
+    Second: 20, //第二波
 
     Big: {
         HP: 500,
-        Attack: 30,
-        Speed: 1,
-        Meat: 3,
+        Attack: 50,
+        Speed: 1.5,
+        Meat: 2,
     }
     ,
     Small: {
         HP: 200,
         Attack: 10,
-        Speed: 1.5,
+        Speed: 2,
         Meat: 1,
     }
 }
@@ -47,7 +43,7 @@ export const ZombieInfo = {
  * Meat: 需要肉的数量
  */
 export const HunterInfo = {
-    HP: 200,
+    HP: 300,
     Attack: 30,
     Speed: 5,
     AttackRange: 3,
@@ -70,7 +66,7 @@ export const PlayerInfo = {
     Attack: 30,
     Speed: 8,
     AttackRange: 3,
-    AttackSpeed: 1,
+    AttackSpeed: 2,
     CollectRange: 10,
 }
 
@@ -82,24 +78,23 @@ export const PlayerInfo = {
  * AttackInterval: 攻击间隔
  */
 export const TowerInfo = {
-    HP: 1500,
+    HP: 2000,
     Level1: {
         Attack: 50,
         AttackRange: 16.5,
         AttackInterval: 2,
     },
     Level2: {
-        Attack: 100,
+        Attack: 90,
         AttackRange: 21.5,
         AttackInterval: 1,
     }
 }
 
 export const WallInfo = {
-    Attack: 50,
+    Attack: 30,
     AttackRange: 5,
 }
-
 
 
 

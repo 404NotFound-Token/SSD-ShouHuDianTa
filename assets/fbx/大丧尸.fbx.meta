@@ -171,7 +171,12 @@
             "func": "onAttack",
             "params": []
           }
-        ]
+        ],
+        "embeddedPlayers": [],
+        "editorExtras": {
+          "embeddedPlayerGroups": []
+        },
+        "auxiliaryCurves": {}
       },
       "ver": "1.0.17",
       "imported": true,

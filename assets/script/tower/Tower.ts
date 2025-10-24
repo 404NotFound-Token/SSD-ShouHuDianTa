@@ -12,6 +12,7 @@ import { instantiate } from 'cc';
 import { isValid } from 'cc';
 import { UIOpacity, Sprite } from 'cc';
 import { EVENT_TYPE, IEvent } from '../tools/CustomEvent';
+import { Quat } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Tower')
@@ -22,7 +23,7 @@ export class Tower extends Component {
 
     @property(Node) level1AttackRangeTip: Node = null;
     @property(Node) level2AttackRangeTip: Node = null;
-    @property(Node) bulletFirePoint: Node = null;
+    // @property(Node) bulletFirePoint: Node = null;
     @property(Prefab) bullet: Prefab = null;
     @property(Node) hp: Node = null;
     @property(Node) bujian: Node = null;
@@ -67,12 +68,33 @@ export class Tower extends Component {
         if (zombie) {
             if (Vec3.distance(zombie.node.worldPosition, this.node.worldPosition) < this.data.AttackRange) {
                 const bullet = instantiate(this.bullet);
-                bullet.parent = this.bulletFirePoint;
+                bullet.setParent(this.node);
+
+                // 计算子弹指向僵尸的方向向量
+                const direction = new Vec3();
+                Vec3.subtract(direction, zombie.node.worldPosition, bullet.worldPosition);
+                direction.normalize(); // 标准化方向向量
+
+                // 使用lookAt方法让子弹朝向目标
+                bullet.lookAt(zombie.node.worldPosition);
+
+                // 设置Y轴旋转角度（如果需要特定的Y轴旋转）
+                const yRotation = Math.atan2(direction.x, direction.z) * 180 / Math.PI;
+                bullet.eulerAngles = new Vec3(0, yRotation, 0);
+
                 tween(bullet)
                     .to(0.2, { worldPosition: zombie.node.worldPosition })
                     .call(() => {
-                        if (zombie && isValid(zombie)) {
+                        if (zombie && isValid(zombie) && zombie.node && isValid(zombie.node)) {
+                            if (zombie.tx) {
+                                zombie.tx.active = true;
+                            }
                             zombie.getComponent(Zombie).beHurt(this.data.Attack);
+                            this.scheduleOnce(() => {
+                                if (zombie && isValid(zombie) && zombie.tx) {
+                                    zombie.tx.active = false;
+                                }
+                            }, 1);
                         }
                         bullet.destroy();
                     })
@@ -80,7 +102,7 @@ export class Tower extends Component {
             }
         }
     }
-
+    
     beHurt(num: number) {
         this.currentHP -= num;
         this.hpbar.fillRange = this.currentHP / TowerInfo.HP;

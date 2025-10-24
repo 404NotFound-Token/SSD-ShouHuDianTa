@@ -26,6 +26,15 @@ export class Wall extends Component {
             const bol = Vec3.distance(zombie.node.worldPosition, this.node.worldPosition) < WallInfo.AttackRange;
             if (bol) {
                 if (zombie && isValid(zombie) && zombie.node && isValid(zombie.node)) {
+                    // 添加检查确保 zombie.tx 存在
+                    if (zombie.tx) {
+                        zombie.tx.active = true;
+                        this.scheduleOnce(() => {
+                            if (zombie && isValid(zombie) && zombie.tx) {
+                                zombie.tx.active = false;
+                            }
+                        }, 1);
+                    }
                     zombie.beHurt(WallInfo.Attack);
                 }
             }

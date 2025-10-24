@@ -30,18 +30,16 @@ export class GameSceneFit extends Component {
 
         // 判断是否为竖屏
         const isPortrait = screenInPx.width < screenInPx.height;
-        console.log("屏幕方向:", isPortrait ? "竖屏" : "横屏", "尺寸:", screenInPx.width, "x", screenInPx.height);
 
-        // if (UIManager.instance) {
-        //     UIManager.instance.refeshUI(isPortrait, screenInPx);
-        // }
+        console.log("屏幕方向:", isPortrait ? "竖屏" : "横屏", "尺寸:", screenInPx.width, "x", screenInPx.height);
+        console.log(this.gameCamera.orthoHeight)
 
         if (screen.windowSize.height > screen.windowSize.width && screen.windowSize.width / screen.windowSize.height < 1) {
             view.setResolutionPolicy(ResolutionPolicy.FIXED_WIDTH);
-            // this.gameCamera.getComponent(Camera).orthoHeight = screenInPx.height / (screenInPx.width / 720);
+            this.gameCamera.getComponent(Camera).orthoHeight = 20
         } else {
             view.setResolutionPolicy(ResolutionPolicy.FIXED_HEIGHT);
-            // this.gameCamera.getComponent(Camera).orthoHeight = 640;
+            this.gameCamera.getComponent(Camera).orthoHeight = 13
         }
     }
 }
