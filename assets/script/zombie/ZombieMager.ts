@@ -4,6 +4,7 @@ import { Zombie } from './Zombie';
 import { EVENT_TYPE, IEvent } from '../tools/CustomEvent';
 import { ZombieInfo } from '../config/GameData';
 import { UIMager } from '../UIMager';
+import { v3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 export enum ZombieType {
@@ -17,11 +18,10 @@ export class ZombieMager extends Component {
 
     @property(Prefab) smallZombie: Prefab = null;
     @property(Prefab) bigZombie: Prefab = null;
-    @property([Node]) points: Node[] = [];
+    // @property([Node]) points: Node[] = [];
 
     Zombies: Zombie[] = [];
     zombieTotal: number = 0;
-
 
     protected onLoad(): void {
         ZombieMager.ins = this;
@@ -44,7 +44,7 @@ export class ZombieMager extends Component {
         for (let i = 0; i < ZombieInfo.First; i++) {
             this.scheduleOnce(() => {
                 this.loadZombie();
-            }, 0.2 * i);
+            }, 0.3 * i);
         }
     }
 
@@ -58,14 +58,14 @@ export class ZombieMager extends Component {
         for (let i = 0; i < 25; i++) {
             this.scheduleOnce(() => {
                 this.loadZombie();
-            }, 0.2 * i);
+            }, 0.3 * i);
         }
 
         this.scheduleOnce(() => {
             for (let i = 0; i < 25; i++) {
                 this.scheduleOnce(() => {
                     this.loadZombie();
-                }, 0.2 * i);
+                }, 0.3 * i);
             }
         }, 10);
 
@@ -74,7 +74,7 @@ export class ZombieMager extends Component {
             for (let i = 0; i < 50; i++) {
                 this.scheduleOnce(() => {
                     this.loadZombie();
-                }, 0.2 * i);
+                }, 0.3 * i);
             }
         }, 20);
     }
@@ -101,7 +101,8 @@ export class ZombieMager extends Component {
             data = ZombieInfo.Small;
             type = ZombieType.Small;
         }
-        const targetPos = this.getRandomPoint().worldPosition;
+        const targetPos = this.getRandomPoint();
+        console.log(targetPos);
         _zombie.setWorldPosition(new Vec3(targetPos.x, _zombie.worldPosition.y, targetPos.z))
         _zombie.parent = this.node;
         _zombie.name = `Zombie ${this.zombieTotal} 号`
@@ -110,17 +111,32 @@ export class ZombieMager extends Component {
         this.Zombies.push(_zombie.getComponent(Zombie));
     }
 
-    /**
-     * 随机出生点
-     * @returns 
-     */
-    getRandomPoint(): Node {
-        if (this.points.length === 0) {
-            return null;
+    getRandomPoint(): Vec3 {
+        // 随机选择一个边框区域：上、下、左、右
+        const edge = Math.floor(Math.random() * 4);
+
+        let x, z;
+
+        switch (edge) {
+            case 0: // 上边框
+                x = Math.random() * 100 - 50; // -50到50
+                z = 50;
+                break;
+            case 1: // 下边框
+                x = Math.random() * 100 - 50; // -50到50
+                z = -50;
+                break;
+            case 2: // 左边框
+                x = -50;
+                z = Math.random() * 100 - 50; // -50到50
+                break;
+            case 3: // 右边框
+                x = 50;
+                z = Math.random() * 100 - 50; // -50到50
+                break;
         }
 
-        const randomIndex = Math.floor(Math.random() * this.points.length);
-        return this.points[randomIndex];
+        return v3(x, 0, z);
     }
 
     /**

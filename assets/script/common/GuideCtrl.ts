@@ -33,11 +33,6 @@ export class GuideCtrl extends Component {
     /** 将按照数组顺序进行引导 */
     @property({ type: [Node], tooltip: "引导点" }) points: Node[] = [];
 
-    /** 当前引导点索引 */
-    private index: number = 0;
-
-    private isActiveTip: boolean = false;
-
     protected onLoad(): void {
         GuideCtrl.ins = this;
     }
@@ -45,7 +40,7 @@ export class GuideCtrl extends Component {
     protected update(dt: number): void {
         this.line.node.setWorldPosition(Player.ins.node.worldPosition);
         let point: Node = null;
-        
+
         if (Player.ins.meatList.length >= HunterInfo.Meat) {
             point = this.points[2];
         } else if (Tower.ins.level == 2) {
