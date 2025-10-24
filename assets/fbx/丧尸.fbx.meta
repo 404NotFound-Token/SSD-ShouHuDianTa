@@ -135,13 +135,18 @@
       "userData": {
         "gltfIndex": 0,
         "wrapMode": 0,
-        "speed": 1,
+        "speed": 1.5,
         "sample": 30,
         "span": {
           "from": 3.7333333333333334,
           "to": 5.099999904632568
         },
-        "events": []
+        "events": [],
+        "embeddedPlayers": [],
+        "editorExtras": {
+          "embeddedPlayerGroups": []
+        },
+        "auxiliaryCurves": {}
       },
       "ver": "1.0.17",
       "imported": true,

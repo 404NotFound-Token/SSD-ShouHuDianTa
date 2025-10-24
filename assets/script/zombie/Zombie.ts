@@ -28,13 +28,14 @@ export class Zombie extends Component {
 
     private hpbar: Sprite = null;
     private uio: UIOpacity = null;
-    private target: Node = null;
     private _hp: number = 0;
     private type: ZombieType = null;
     private _data: any = null;
     private state: ZombieState = ZombieState.Idle;
     private hpTween: Tween<Node> = null;
-    private _attackTarget: Node = null;
+
+    private attack_target: Node = null;// 攻击目标 发生碰撞赋值
+    private move_target: Node = null;// 移动目标 初始化赋值
 
     protected onLoad(): void {
         this.hpbar = this.hp.getChildByName("Bar").getComponent(Sprite);
@@ -59,19 +60,18 @@ export class Zombie extends Component {
     public init(type: ZombieType, data: any, target: Node) {
         this.type = type;
         this._data = data;
-        this.target = target;
+        this.move_target = target;
         this.reset();
     }
 
     private onTriggerEnter(event: ICollisionEvent) {
         if (event.otherCollider.getGroup() === ColliderGroup.Building ||
             event.otherCollider.getGroup() === ColliderGroup.Hunter) {
-            // this.state = ZombieState.Attack;
-            this._attackTarget = event.otherCollider.node;
+            this.attack_target = event.otherCollider.node;
             this.capsuleCollider.enabled = false;
 
-            if (this._attackTarget && isValid(this._attackTarget)) {
-                const targetPos = this._attackTarget.worldPosition;
+            if (this.attack_target && isValid(this.attack_target)) {
+                const targetPos = this.attack_target.worldPosition;
                 const currentPos = this.node.worldPosition;
                 const direction = new Vec3();
                 Vec3.subtract(direction, targetPos, currentPos);
@@ -91,20 +91,22 @@ export class Zombie extends Component {
             this.playAni(attackAniName);
 
             this.ske.once(SkeletalAnimation.EventType.FINISHED, (() => {
-                // this.state = ZombieState.Run;
-                // this._attackTarget = null;
+                if (this.attack_target && isValid(this.attack_target)) {
+                    this.playAni(ZombieState.Attack);
+                } else {
+                    this.playAni(ZombieState.Run);
+                }
                 this.capsuleCollider.enabled = true;
-                this.playAni(ZombieState.Attack);
             }));
         }
     }
 
     onAttack() {
-        if (this._attackTarget && isValid(this._attackTarget)) {
-            if (this._attackTarget.getComponent(Wall)) {
-                this._attackTarget.getComponent(Wall).beHurt(this._data.Attack);
-            } else if (this._attackTarget.getComponent(HunterController)) {
-                this._attackTarget.getComponent(HunterController).beHurt(this._data.Attack);
+        if (this.attack_target && isValid(this.attack_target)) {
+            if (this.attack_target.getComponent(Wall)) {
+                this.attack_target.getComponent(Wall).beHurt(this._data.Attack);
+            } else if (this.attack_target.getComponent(HunterController)) {
+                this.attack_target.getComponent(HunterController).beHurt(this._data.Attack);
             }
         }
     }
@@ -117,8 +119,8 @@ export class Zombie extends Component {
 
             const currentPosition = this.node.worldPosition;
             let targetPosition: Vec3 = null;
-            if (this.target && isValid(this.target)) {
-                targetPosition = this.target.worldPosition;
+            if (this.move_target && isValid(this.move_target)) {
+                targetPosition = this.move_target.worldPosition;
 
                 // 计算方向向量
                 const direction = new Vec3();
@@ -142,8 +144,8 @@ export class Zombie extends Component {
                     this.node.eulerAngles = new Vec3(0, angle, 0);
                 }
             } else {
-                this.target = ZombieMager.ins.getTarget(this.node);
-                targetPosition = this.target.worldPosition;
+                this.move_target = ZombieMager.ins.getTarget(this.node);
+                targetPosition = this.move_target.worldPosition;
             }
         }
     }

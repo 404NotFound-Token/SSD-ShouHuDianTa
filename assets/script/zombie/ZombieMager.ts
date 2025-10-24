@@ -30,6 +30,9 @@ export class ZombieMager extends Component {
         IEvent.on(EVENT_TYPE.GAME_START, (() => {
             this.loadFirstZombies();
         }));
+        IEvent.on(EVENT_TYPE.GAME_OVER, (() => {
+            this.unschedule(this.a);
+        }));
     }
 
     private isSecondZombiesLoaded: boolean = false;
@@ -47,7 +50,7 @@ export class ZombieMager extends Component {
             }, 0.2 * i);
         }
     }
-
+    private a
     loadSecondZombies() {
         this.isSecondZombiesLoaded = true;
         UIMager.instance.moreZombiesComingTip.active = true;
@@ -95,7 +98,7 @@ export class ZombieMager extends Component {
         // }, 50);
 
 
-        this.schedule(() => {
+        this.a = this.schedule(() => {
             for (let i = 0; i < ZombieInfo.Second; i++) {
                 this.scheduleOnce(() => {
                     this.loadZombie();
