@@ -6,6 +6,10 @@ export class GameSceneFit extends Component {
     @property(Camera)
     gameCamera: Camera = null!;
 
+    @property(Camera)
+    uiCamera: Camera = null!;
+
+
     start() {
         view.on("canvas-resize", this.resize, this);
         this.scheduleOnce(this.resize);
@@ -37,9 +41,11 @@ export class GameSceneFit extends Component {
         if (screen.windowSize.height > screen.windowSize.width && screen.windowSize.width / screen.windowSize.height < 1) {
             view.setResolutionPolicy(ResolutionPolicy.FIXED_WIDTH);
             this.gameCamera.getComponent(Camera).orthoHeight = 20
+            // this.uiCamera.getComponent(Camera).orthoHeight = screenInPx.height / (screenInPx.width / 720);
         } else {
             view.setResolutionPolicy(ResolutionPolicy.FIXED_HEIGHT);
             this.gameCamera.getComponent(Camera).orthoHeight = 13
+            // this.uiCamera.getComponent(Camera).orthoHeight = 640;
         }
     }
 }
