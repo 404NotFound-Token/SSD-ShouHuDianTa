@@ -106,7 +106,6 @@ export class HunterController extends Component {
      */
     onAttack() {
         if (this.currentTarget && isValid(this.currentTarget)) {
-            console.log("攻击", this.currentTarget.name)
             this.currentTarget.beHurt(HunterInfo.Attack);
         }
     }
@@ -123,7 +122,6 @@ export class HunterController extends Component {
         this.ani.once(SkeletalAnimation.EventType.FINISHED, (() => {
             this.playAni(HunterState.RUN);
             this.currentTarget = null;
-            console.log("攻击动画结束 恢复为待机状态", this.state)
         }))
     }
 
