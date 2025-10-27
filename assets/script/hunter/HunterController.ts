@@ -13,6 +13,7 @@ import { HunterMager } from './HunterMager';
 import { SkeletalAnimation } from 'cc';
 import { isValid } from 'cc';
 import { EVENT_TYPE, IEvent } from '../tools/CustomEvent';
+import { RigidBody } from 'cc';
 
 const { ccclass, property } = _decorator;
 
@@ -26,9 +27,11 @@ export enum HunterState {
 @ccclass('HunterController')
 export class HunterController extends Component {
 
-    @property(Node) hp: Node = null;
+    @property(Node)
+    hp: Node = null;
 
-    @property(SkeletalAnimation) ani: SkeletalAnimation = null;
+    @property(SkeletalAnimation)
+    ani: SkeletalAnimation = null;
 
     /** 临时目标  门外 */
     private _Target: Node = null;
@@ -38,11 +41,13 @@ export class HunterController extends Component {
     private state: HunterState = HunterState.IDLE;
     private hpTween: Tween<Node> = null;
     private currentTarget: Zombie = null;
+    private rigidbody: RigidBody = null;
 
     protected onLoad(): void {
         this.currentHP = HunterInfo.HP;
         this.uio = this.hp.getComponent(UIOpacity);
         this.hpbar = this.hp.getChildByName("Bar").getComponent(Sprite);
+        this.rigidbody = this.node.getComponent(RigidBody);
 
         IEvent.on(EVENT_TYPE.GAME_OVER, (() => {
             this.playAni(HunterState.IDLE);
@@ -54,11 +59,10 @@ export class HunterController extends Component {
         this.playAni(HunterState.RUN);
     }
 
-
     update(deltaTime: number) {
         // if (!this.currentTarget || !isValid(this.currentTarget))
-        // if (this.state == HunterState.IDLE || this.state == HunterState.RUN) {
-        if (this.state == HunterState.RUN) {
+        if (this.state == HunterState.IDLE || this.state == HunterState.RUN) {
+            // if (this.state == HunterState.RUN) {
 
             // 优先移动到设定的目标点
             if (this._Target) {
@@ -181,6 +185,11 @@ export class HunterController extends Component {
      */
     private playAni(state: HunterState) {
         this.state = state;
+
+        if (this.rigidbody) {
+            this.rigidbody.setLinearVelocity(Vec3.ZERO);
+            this.rigidbody.setAngularVelocity(Vec3.ZERO);
+        }
         if (this.ani.getState(state)?.isPlaying) return;
         this.ani.play(state);
     }

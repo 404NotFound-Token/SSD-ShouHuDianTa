@@ -92,6 +92,7 @@ export class GameMager extends Component {
     }
 
     protected onDestroy(): void {
+        this.unscheduleAllCallbacks();
         IEvent.off(EVENT_TYPE.GAME_OVER, this._GameOver, this);
     }
 

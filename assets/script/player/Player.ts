@@ -14,8 +14,8 @@ export class Player extends Component {
     @property(Node) joystick: Node = null!; // 虚拟摇杆节点
     @property(Camera) mainCamera: Camera = null!; // 主相机节点
     @property({ type: CCBoolean, displayName: "相机朝向", visible: function (this: Player) { return !!this.mainCamera; } }) isCameraOrientation: boolean = true;
-    @property({ type: Node, tooltip: "物品挂载点" }) point1: Node = null;
-    @property({ type: Node, tooltip: "物品挂载点" }) point2: Node = null;
+    @property({ type: Node, tooltip: "肉挂载点" }) point1: Node = null;
+    @property({ type: Node, tooltip: "麦垛挂载点" }) point2: Node = null;
 
     private rigidBody: RigidBody = null;
     private startGame: boolean = false;

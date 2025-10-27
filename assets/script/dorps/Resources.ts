@@ -71,6 +71,11 @@ export class Resources extends Component {
             this.tween = new Tween(this.node)
                 .bezierTo3D(0.3, meatPos, controlPos, endPos)
                 .call(() => {
+                    // const list = this.type == RESOURCE_TYPE.MEAT ? playerCom.meatList : playerCom.wheatList;
+                    // let re = DropsMager.instance.getResourceNode(this.type);
+                    // re.setParent(_point);
+                    // list.push(re);
+                    // this.node.destroy();
                     // 保存世界坐标
                     const worldPos = this.node.worldPosition.clone();
 

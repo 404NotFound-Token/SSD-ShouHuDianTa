@@ -41,7 +41,7 @@ export class GuideCtrl extends Component {
         this.line.node.setWorldPosition(Player.ins.node.worldPosition);
         let point: Node = null;
 
-        if (Player.ins.meatList.length >= HunterInfo.Meat) {
+        if (Player.ins.meatList.length >= HunterInfo.Meat && HunterInfo.Current < HunterInfo.Max) {
             point = this.points[2];
         } else if (Tower.ins.level == 2) {
             point = ZombieMager.ins.returnMinDistanceZombie(Player.ins.node).node;

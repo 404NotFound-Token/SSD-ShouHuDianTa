@@ -74,7 +74,7 @@ export class Landmark extends Component {
 
             endPos = this.node.worldPosition;
             controlPos = new Vec3(
-                startPos.x,
+                startPos.x + 5,
                 startPos.y,
                 startPos.z
             )

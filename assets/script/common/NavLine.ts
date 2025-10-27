@@ -60,7 +60,7 @@ export class NavLine extends Component {
         this.desLen = Vec3.distance(desPos, tempV1)
 
         //根据需求也可以是x
-        tempV2.z = this.desLen * (3 / 1.8);
+        tempV2.z = this.desLen * (3 / 4.5);
         this.node.setScale(tempV2);
 
         //根据需求也可以是x

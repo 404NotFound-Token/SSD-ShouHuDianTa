@@ -12,7 +12,8 @@
   "_defines": [
     {
       "USE_INSTANCING": true,
-      "USE_TEXTURE": true
+      "USE_TEXTURE": true,
+      "USE_TEXTURE_MOVE": true
     }
   ],
   "_states": [

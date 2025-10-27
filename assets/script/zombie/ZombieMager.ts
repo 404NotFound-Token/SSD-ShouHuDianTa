@@ -5,6 +5,7 @@ import { EVENT_TYPE, IEvent } from '../tools/CustomEvent';
 import { ZombieInfo } from '../config/GameData';
 import { UIMager } from '../UIMager';
 import { v3 } from 'cc';
+import { GameMager } from '../GameMager';
 const { ccclass, property } = _decorator;
 
 export enum ZombieType {
@@ -16,8 +17,11 @@ export enum ZombieType {
 export class ZombieMager extends Component {
     public static ins: ZombieMager = null;
 
-    @property(Prefab) smallZombie: Prefab = null;
-    @property(Prefab) bigZombie: Prefab = null;
+    @property(Prefab)
+    smallZombie: Prefab = null;
+
+    @property(Prefab)
+    bigZombie: Prefab = null;
     // @property([Node]) points: Node[] = [];
 
     Zombies: Zombie[] = [];
@@ -36,11 +40,11 @@ export class ZombieMager extends Component {
     }
 
     private isSecondZombiesLoaded: boolean = false;
+
     protected start(): void {
-        if (this.isSecondZombiesLoaded) return;
         this.scheduleOnce(() => {
             this.loadSecondZombies();
-        }, 60)
+        }, 50)
     }
 
     loadFirstZombies() {
@@ -50,55 +54,19 @@ export class ZombieMager extends Component {
             }, 0.2 * i);
         }
     }
-    private a
+
+    private a: any; 
+
     loadSecondZombies() {
+        if (this.isSecondZombiesLoaded) return;
         this.isSecondZombiesLoaded = true;
         UIMager.instance.moreZombiesComingTip.active = true;
         this.scheduleOnce(() => {
             UIMager.instance.moreZombiesComingTip.active = false;
         }, 3)
 
-        // for (let i = 0; i < 15; i++) {
-        //     this.scheduleOnce(() => {
-        //         this.loadZombie();
-        //     }, 0.2 * i);
-        // }
-
-        // this.scheduleOnce(() => {
-        //     for (let i = 0; i < 20; i++) {
-        //         this.scheduleOnce(() => {
-        //             this.loadZombie();
-        //         }, 0.2 * i);
-        //     }
-        // }, 10);
-
-
-        // this.scheduleOnce(() => {
-        //     for (let i = 0; i < 25; i++) {
-        //         this.scheduleOnce(() => {
-        //             this.loadZombie();
-        //         }, 0.2 * i);
-        //     }
-        // }, 20);
-
-        // this.scheduleOnce(() => {
-        //     for (let i = 0; i < 30; i++) {
-        //         this.scheduleOnce(() => {
-        //             this.loadZombie();
-        //         }, 0.2 * i);
-        //     }
-        // }, 30);
-
-        // this.scheduleOnce(() => {
-        //     for (let i = 0; i < 40; i++) {
-        //         this.scheduleOnce(() => {
-        //             this.loadZombie();
-        //         }, 0.2 * i);
-        //     }
-        // }, 50);
-
-
         this.a = this.schedule(() => {
+            if (GameMager.ins.GameEnd) return;
             for (let i = 0; i < ZombieInfo.Second; i++) {
                 this.scheduleOnce(() => {
                     this.loadZombie();

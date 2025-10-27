@@ -82,9 +82,9 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 2,
-      "y": 2,
-      "z": 2
+      "x": 2.3,
+      "y": 2.3,
+      "z": 2.3
     },
     "_mobility": 0,
     "_layer": 1073741824,
@@ -2767,7 +2767,7 @@
     "_id": ""
   },
   {
-    "__type__": "3b4cavlLQxJtJ61JpOzsim4",
+    "__type__": "c9a05nhfHREsZVudiYk0XWp",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -2778,26 +2778,20 @@
     "__prefab": {
       "__id__": 95
     },
-    "layoutType": 1,
-    "startPosition": {
+    "position": {
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
       "z": 0
     },
-    "spacingX": 1,
-    "spacingY": 0.2,
-    "spacingZ": 1,
-    "gridColumns": 3,
-    "gridRowSpacing": 1,
-    "gridColumnSpacing": 1,
-    "alignment": 2,
+    "spacingY": 0.5,
+    "x": false,
     "edit_update": true,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "789X+Z9v1Md6ZWFY5JrxEA"
+    "fileId": "f6com7aQBA/6M3esrCiGwu"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2860,7 +2854,7 @@
     "_id": ""
   },
   {
-    "__type__": "3b4cavlLQxJtJ61JpOzsim4",
+    "__type__": "c9a05nhfHREsZVudiYk0XWp",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -2871,26 +2865,20 @@
     "__prefab": {
       "__id__": 99
     },
-    "layoutType": 1,
-    "startPosition": {
+    "position": {
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
       "z": 0
     },
-    "spacingX": 1,
-    "spacingY": 0,
-    "spacingZ": 1,
-    "gridColumns": 3,
-    "gridRowSpacing": 1,
-    "gridColumnSpacing": 1,
-    "alignment": 2,
+    "spacingY": 0.5,
+    "x": false,
     "edit_update": true,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "dfS4pv/cVF3rQJ/xA346uP"
+    "fileId": "1e9cNRs0tAJIjS5W+0u/j5"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2931,7 +2919,7 @@
         "__id__": 103
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 109
@@ -3360,7 +3348,7 @@
     "propertyPath": [
       "playOnLoad"
     ],
-    "value": false
+    "value": true
   },
   {
     "__type__": "cc.TargetInfo",
@@ -3520,7 +3508,6 @@
       "__id__": 0
     },
     "fileId": "80I46/i6ZZKawMxJGwPiJY",
-    "instance": null,
     "targetOverrides": [],
     "nestedPrefabInstanceRoots": [
       {
