@@ -11,6 +11,7 @@ import { Player } from './player/Player';
 import { UIOpacity } from 'cc';
 import { Tween } from 'cc';
 import { NavLine } from './common/NavLine';
+import { PlayableSDK } from './common/PlayableSDK';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameMager')
@@ -89,6 +90,11 @@ export class GameMager extends Component {
         ZombieInfo.Small.Speed = 0;
         HunterInfo.Speed = 0;
         PlayerInfo.Speed = 0;
+    }
+
+    playNow(e: Event) {
+        console.log('playNow');
+        PlayableSDK.download('playNow')
     }
 
     protected onDestroy(): void {

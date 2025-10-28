@@ -1,11 +1,12 @@
 import { _decorator, Component, find, instantiate, Node, NodePool, Prefab, Vec3 } from 'cc';
 import { WallMager } from '../wall/WallMager';
-import { Zombie } from './Zombie';
+import { Zombie, ZombieState } from './Zombie';
 import { EVENT_TYPE, IEvent } from '../tools/CustomEvent';
 import { ZombieInfo } from '../config/GameData';
 import { UIMager } from '../UIMager';
 import { v3 } from 'cc';
 import { GameMager } from '../GameMager';
+import { isValid } from 'cc';
 const { ccclass, property } = _decorator;
 
 export enum ZombieType {
@@ -55,7 +56,7 @@ export class ZombieMager extends Component {
         }
     }
 
-    private a: any; 
+    private a: any;
 
     loadSecondZombies() {
         if (this.isSecondZombiesLoaded) return;
@@ -173,6 +174,10 @@ export class ZombieMager extends Component {
         let minDis = Number.MAX_VALUE;
         for (let i = 0; i < this.Zombies.length; i++) {
             const zombie = this.Zombies[i];
+
+            if (zombie._state == ZombieState.Die || zombie._state == ZombieState._Die) continue;
+            if (!zombie || !isValid(zombie) || !zombie.node || !isValid(zombie.node)) continue;
+
             const dis = Vec3.distance(target.worldPosition, zombie.node.worldPosition);
             if (dis < minDis) {
                 minDis = dis;

@@ -4,7 +4,7 @@ import { Zombie } from '../zombie/Zombie';
 import { GameMager } from '../GameMager';
 import { CapsuleCollider } from 'cc';
 import { ICollisionEvent } from 'cc';
-import { ColliderGroup, HunterInfo } from '../config/GameData';
+import { Attacker, ColliderGroup, HunterInfo } from '../config/GameData';
 import { UIOpacity } from 'cc';
 import { Sprite } from 'cc';
 import { tween } from 'cc';
@@ -52,7 +52,6 @@ export class HunterController extends Component {
         IEvent.on(EVENT_TYPE.GAME_OVER, (() => {
             this.playAni(HunterState.IDLE);
         }), this);
-        // this.playAni(HunterState.IDLE)
     }
 
     start() {
@@ -101,12 +100,9 @@ export class HunterController extends Component {
         this._Target = point;
     }
 
-    /**
-     * 动画帧事件，触发实际造成伤害的逻辑
-     */
     onAttack() {
         if (this.currentTarget && isValid(this.currentTarget)) {
-            this.currentTarget.beHurt(HunterInfo.Attack);
+            this.currentTarget.beHurt(HunterInfo.Attack, Attacker.Hunter);
         }
     }
 

@@ -1,6 +1,6 @@
 import { _decorator, CapsuleCollider, Component, ICollisionEvent, isValid, Node, Sprite, UIOpacity, Vec3 } from 'cc';
 import { ZombieMager, ZombieType } from './ZombieMager';
-import { ColliderGroup, RESOURCE_TYPE, ResquetBody, ZombieInfo } from '../config/GameData';
+import { Attacker, ColliderGroup, RESOURCE_TYPE, ResquetBody, ZombieInfo } from '../config/GameData';
 import { Wall } from '../wall/Wall';
 import { EVENT_TYPE, IEvent } from '../tools/CustomEvent';
 import { GameMager } from '../GameMager';
@@ -16,6 +16,7 @@ export enum ZombieState {
     Attack = "Attack",
     _Attack = "_Attack",
     Die = "Die",
+    _Die = "_Die",
 }
 
 @ccclass('Zombie')
@@ -31,11 +32,14 @@ export class Zombie extends Component {
     private _hp: number = 0;
     private type: ZombieType = null;
     private _data: any = null;
-    private state: ZombieState = ZombieState.Idle;
     private hpTween: Tween<Node> = null;
 
     private attack_target: Node = null;// 攻击目标 发生碰撞赋值
     private move_target: Node = null;// 移动目标 初始化赋值
+
+    private state: ZombieState = ZombieState.Idle;
+    public get _state() { return this.state; }
+
 
     protected onLoad(): void {
         this.hpbar = this.hp.getChildByName("Bar").getComponent(Sprite);
@@ -150,7 +154,8 @@ export class Zombie extends Component {
         }
     }
 
-    public beHurt(num: number) {
+    public beHurt(num: number, attacker: Attacker) {
+        if (this.state == ZombieState.Die || this.state == ZombieState._Die) return;
         if (this.node && isValid(this.node)) {
             this.uio.opacity = 255;
             this._hp -= num;
@@ -160,7 +165,17 @@ export class Zombie extends Component {
                 this.hp.active = false;
                 this.capsuleCollider.enabled = false;
 
+                // 根据攻击类型播放死亡动画
+                // if (attacker == Attacker.Wall || attacker == Attacker.Tower) {
+                //     this.playAni(ZombieState._Die);
+                // } else {
+                //     this.playAni(ZombieState.Die);
+                // }
+
                 this.playAni(ZombieState.Die);
+
+                console.log('%c zombieDie: ' + `${this.node.name} 攻击来源： ${attacker}`, 'color: #00ff15ff; font-weight: bold;');
+
                 this.ske.once(SkeletalAnimation.EventType.FINISHED, (() => {
                     const requstBody = new ResquetBody(RESOURCE_TYPE.MEAT, { pos: this.node.worldPosition.clone(), meat: this._data.Meat })
                     IEvent.emit(EVENT_TYPE.DROP_RESOURCE, requstBody);

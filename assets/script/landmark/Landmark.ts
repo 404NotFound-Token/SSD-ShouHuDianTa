@@ -74,9 +74,9 @@ export class Landmark extends Component {
 
             endPos = this.node.worldPosition;
             controlPos = new Vec3(
-                startPos.x + 5,
-                startPos.y,
-                startPos.z
+                startPos.x / 2,
+                startPos.y / 2,
+                startPos.z / 2
             )
 
             new Tween(node)

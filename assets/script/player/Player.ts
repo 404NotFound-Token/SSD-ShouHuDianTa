@@ -1,6 +1,6 @@
 import { _decorator, Camera, CCBoolean, Component, isValid, Node, RigidBody, Vec3 } from 'cc';
 import { Joystick } from './Joystick';
-import { PlayerInfo } from '../config/GameData';
+import { Attacker, PlayerInfo } from '../config/GameData';
 import { ZombieMager } from '../zombie/ZombieMager';
 import { Zombie } from '../zombie/Zombie';
 import { SkeletalAnimation } from 'cc';
@@ -90,7 +90,7 @@ export class Player extends Component {
             // }
 
             // 执行攻击
-            closestZombie.beHurt(PlayerInfo.Attack);
+            closestZombie.beHurt(PlayerInfo.Attack, Attacker.Player);
         }
     }
 

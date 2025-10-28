@@ -150,6 +150,17 @@ export enum RESOURCE_TYPE {
 }
 
 /**
+ * 攻击者
+ */
+export enum Attacker {
+    Zombie = "zombie",
+    Hunter = "hunter",
+    Player = "player",
+    Wall = "wall",
+    Tower = "tower",
+}
+
+/**
  * 自定义请求体
  */
 export class ResquetBody {

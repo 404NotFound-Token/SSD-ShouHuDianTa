@@ -3,7 +3,7 @@ import { Tower } from '../tower/Tower';
 import { ZombieMager } from '../zombie/ZombieMager';
 import { isValid } from 'cc';
 import { Vec3 } from 'cc';
-import { WallInfo } from '../config/GameData';
+import { Attacker, WallInfo } from '../config/GameData';
 import { GameMager } from '../GameMager';
 const { ccclass, property } = _decorator;
 
@@ -35,7 +35,7 @@ export class Wall extends Component {
                             }
                         }, 1);
                     }
-                    zombie.beHurt(WallInfo.Attack);
+                    zombie.beHurt(WallInfo.Attack, Attacker.Wall);
                 }
             }
         });

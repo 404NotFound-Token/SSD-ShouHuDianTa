@@ -4,7 +4,7 @@ import { Vec3 } from 'cc';
 import { Zombie } from '../zombie/Zombie';
 import { GameMager } from '../GameMager';
 import { Label } from 'cc';
-import { GameInfo, TowerInfo } from '../config/GameData';
+import { Attacker, GameInfo, TowerInfo } from '../config/GameData';
 import { v3 } from 'cc';
 import { tween } from 'cc';
 import { Prefab } from 'cc';
@@ -89,7 +89,7 @@ export class Tower extends Component {
                             if (zombie.tx) {
                                 zombie.tx.active = true;
                             }
-                            zombie.getComponent(Zombie).beHurt(this.data.Attack);
+                            zombie.getComponent(Zombie).beHurt(this.data.Attack, Attacker.Tower);
                             this.scheduleOnce(() => {
                                 if (zombie && isValid(zombie) && zombie.tx) {
                                     zombie.tx.active = false;
@@ -102,7 +102,7 @@ export class Tower extends Component {
             }
         }
     }
-    
+
     beHurt(num: number) {
         this.currentHP -= num;
         this.hpbar.fillRange = this.currentHP / TowerInfo.HP;
@@ -141,7 +141,7 @@ export class Tower extends Component {
             .to(0.2, { scale: v3(0.9, 0.9, 0.9) })
             .to(0.2, { scale: v3(1, 1, 1) })
             .call(() => {
-                console.log("Upgrade TowerInfo", this.level, TowerInfo);
+                console.log("Upgrade Tower Level:", this.level, TowerInfo);
             })
             .start();
     }

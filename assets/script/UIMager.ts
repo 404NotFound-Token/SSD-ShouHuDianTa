@@ -63,11 +63,6 @@ export class UIMager extends Component {
         this.playNowPanel.active = true;
     }
 
-    playNow(e: Event) {
-        console.log('playNow');
-        PlayableSDK.download('playNow')
-    }
-
 
     // maxTipAni() {
     //     const tip = instantiate(this.maxTip);

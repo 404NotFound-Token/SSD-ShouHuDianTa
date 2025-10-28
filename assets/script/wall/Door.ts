@@ -38,13 +38,13 @@ export class Door extends Component {
             let leftEnlerAngles = new Vec3();
             let rightEnlerAngles = new Vec3();
 
-            const a = e.otherCollider.node.worldPosition;
-            const b = this.node.worldPosition;
+            const roleWorldPos = e.otherCollider.node.worldPosition;
+            const doorWorldPos = this.node.worldPosition;
 
             // z轴为正前方
             if (this.type == DoorType.Horizontal) {
                 // 人物在门下方
-                if (a.z > b.z) {
+                if (roleWorldPos.z > doorWorldPos.z) {
                     leftEnlerAngles.set(0, 90, 0);
                     rightEnlerAngles.set(0, -90, 0);
                 }
@@ -55,7 +55,7 @@ export class Door extends Component {
                 }
             } else if (this.type == DoorType.Vertical) {
                 // 人物在门左方
-                if (a.x > b.x) {
+                if (roleWorldPos.x > doorWorldPos.x) {
                     leftEnlerAngles.set(0, 90, 0);
                     rightEnlerAngles.set(0, -90, 0);
                 }
