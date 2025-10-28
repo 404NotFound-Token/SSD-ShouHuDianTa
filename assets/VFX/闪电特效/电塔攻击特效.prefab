@@ -95,7 +95,7 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 3,
+      "x": 2,
       "y": 100,
       "z": 100
     },
@@ -840,7 +840,7 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 3,
+      "x": 2,
       "y": 100,
       "z": 100
     },
@@ -1585,7 +1585,7 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 3,
+      "x": 2,
       "y": 100,
       "z": 100
     },
@@ -2306,7 +2306,6 @@
       "__id__": 0
     },
     "fileId": "b31kvgrKFMMo//oeBJ8nFf",
-    "instance": null,
     "targetOverrides": [
       {
         "__id__": 177
@@ -3803,6 +3802,7 @@
     "gameCamera": {
       "__id__": 233
     },
+    "uiCamera": null,
     "_id": "32y/ebgk9NrJ7EvyaDhrXU"
   },
   {

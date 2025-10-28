@@ -1,3 +1,4 @@
+import { tween } from 'cc';
 import { _decorator, Camera, Component, ResolutionPolicy, screen, Size, view } from 'cc';
 const { ccclass, property } = _decorator;
 
@@ -40,12 +41,14 @@ export class GameSceneFit extends Component {
 
         if (screen.windowSize.height > screen.windowSize.width && screen.windowSize.width / screen.windowSize.height < 1) {
             view.setResolutionPolicy(ResolutionPolicy.FIXED_WIDTH);
-            this.gameCamera.getComponent(Camera).orthoHeight = 20
-            // this.uiCamera.getComponent(Camera).orthoHeight = screenInPx.height / (screenInPx.width / 720);
+            tween(this.gameCamera)
+                .to(0.2, { orthoHeight: 20 })
+                .start();
         } else {
             view.setResolutionPolicy(ResolutionPolicy.FIXED_HEIGHT);
-            this.gameCamera.getComponent(Camera).orthoHeight = 13
-            // this.uiCamera.getComponent(Camera).orthoHeight = 640;
+            tween(this.gameCamera)
+                .to(0.2, { orthoHeight: 13 })
+                .start();
         }
     }
 }

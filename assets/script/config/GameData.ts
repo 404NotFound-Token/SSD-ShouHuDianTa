@@ -21,7 +21,7 @@ export const ZombieInfo = {
         HP: 500,
         Attack: 50,
         Speed: 1.5,
-        Meat: 2,
+        Meat: 3,
     }
     ,
     Small: {
