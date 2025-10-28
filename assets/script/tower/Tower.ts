@@ -63,44 +63,86 @@ export class Tower extends Component {
         }, this.data.AttackInterval)
     }
 
+    // attack() {
+    //     const zombie = ZombieMager.ins.returnMinDistanceZombie(this.node);
+    //     if (zombie) {
+    //         if (Vec3.distance(zombie.node.worldPosition, this.node.worldPosition) < this.data.AttackRange) {
+    //             const bullet = instantiate(this.bullet);
+    //             bullet.setParent(this.node);
+
+    //             // 计算子弹指向僵尸的方向向量
+    //             const direction = new Vec3();
+    //             Vec3.subtract(direction, zombie.node.worldPosition, bullet.worldPosition);
+    //             direction.normalize(); // 标准化方向向量
+
+    //             // 使用lookAt方法让子弹朝向目标
+    //             bullet.lookAt(zombie.node.worldPosition);
+
+    //             // 设置Y轴旋转角度（如果需要特定的Y轴旋转）
+    //             const yRotation = Math.atan2(direction.x, direction.z) * 180 / Math.PI;
+    //             bullet.eulerAngles = new Vec3(0, yRotation, 0);
+
+    //             tween(bullet)
+    //                 .to(0.2, { worldPosition: zombie.node.worldPosition })
+    //                 .call(() => {
+    //                     if (zombie && isValid(zombie) && zombie.node && isValid(zombie.node)) {
+    //                         if (zombie.tx) {
+    //                             zombie.tx.active = true;
+    //                         }
+    //                         zombie.getComponent(Zombie).beHurt(this.data.Attack, Attacker.Tower);
+    //                         this.scheduleOnce(() => {
+    //                             if (zombie && isValid(zombie) && zombie.tx) {
+    //                                 zombie.tx.active = false;
+    //                             }
+    //                         }, 1);
+    //                     }
+    //                     bullet.destroy();
+    //                 })
+    //                 .start();
+    //         }
+    //     }
+    // }
+
     attack() {
-        const zombie = ZombieMager.ins.returnMinDistanceZombie(this.node);
-        if (zombie) {
-            if (Vec3.distance(zombie.node.worldPosition, this.node.worldPosition) < this.data.AttackRange) {
-                const bullet = instantiate(this.bullet);
-                bullet.setParent(this.node);
+        ZombieMager.ins.Zombies.forEach(zombie => {
+            const bol = Vec3.distance(zombie.node.worldPosition, this.node.worldPosition) < this.data.AttackRange;
+            if (bol) {
+                if (zombie && isValid(zombie) && zombie.node && isValid(zombie.node)) {
+                    const bullet = instantiate(this.bullet);
+                    bullet.setParent(this.node);
 
-                // 计算子弹指向僵尸的方向向量
-                const direction = new Vec3();
-                Vec3.subtract(direction, zombie.node.worldPosition, bullet.worldPosition);
-                direction.normalize(); // 标准化方向向量
+                    // 计算子弹指向僵尸的方向向量
+                    const direction = new Vec3();
+                    Vec3.subtract(direction, zombie.node.worldPosition, bullet.worldPosition);
+                    direction.normalize(); // 标准化方向向量
 
-                // 使用lookAt方法让子弹朝向目标
-                bullet.lookAt(zombie.node.worldPosition);
+                    // 使用lookAt方法让子弹朝向目标
+                    bullet.lookAt(zombie.node.worldPosition);
 
-                // 设置Y轴旋转角度（如果需要特定的Y轴旋转）
-                const yRotation = Math.atan2(direction.x, direction.z) * 180 / Math.PI;
-                bullet.eulerAngles = new Vec3(0, yRotation, 0);
+                    // 设置Y轴旋转角度（如果需要特定的Y轴旋转）
+                    const yRotation = Math.atan2(direction.x, direction.z) * 180 / Math.PI;
+                    bullet.eulerAngles = new Vec3(0, yRotation, 0);
 
-                tween(bullet)
-                    .to(0.2, { worldPosition: zombie.node.worldPosition })
-                    .call(() => {
-                        if (zombie && isValid(zombie) && zombie.node && isValid(zombie.node)) {
-                            if (zombie.tx) {
-                                zombie.tx.active = true;
-                            }
-                            zombie.getComponent(Zombie).beHurt(this.data.Attack, Attacker.Tower);
-                            this.scheduleOnce(() => {
-                                if (zombie && isValid(zombie) && zombie.tx) {
-                                    zombie.tx.active = false;
+                    tween(bullet)
+                        .to(0.2, { worldPosition: zombie.node.worldPosition })
+                        .call(() => {
+                            if (zombie && isValid(zombie) && zombie.node && isValid(zombie.node)) {
+                                if (zombie.tx) {
+                                    zombie.tx.active = true;
                                 }
-                            }, 1);
-                        }
-                        bullet.destroy();
-                    })
-                    .start();
+                                zombie.getComponent(Zombie).beHurt(this.data.Attack, Attacker.Tower);
+                                this.scheduleOnce(() => {
+                                    if (zombie && isValid(zombie) && zombie.tx) {
+                                        zombie.tx.active = false;
+                                    }
+                                }, 1);
+                            }
+                            bullet.destroy();
+                        })
+                        .start();
+                }
             }
-        }
+        })
     }
 
     beHurt(num: number) {
