@@ -95,7 +95,9 @@ export class Landmark extends Component {
                         meatNumber++;
                         if (meatNumber == HunterInfo.Meat) {
                             meatNumber = 0;
-                            HunterMager.instance.loadHunter();
+                            if (HunterInfo.Current < HunterInfo.Max) {
+                                HunterMager.instance.loadHunter();
+                            }
                         }
                     }
                     node.destroy();

@@ -16,7 +16,7 @@ export class HunterMager extends Component {
     @property([Node]) doors: Node[] = [];
     @property(Node) point: Node = null;
 
-    public hunters: Node[] = [];
+    // public hunters: Node[] = [];
 
     protected onLoad(): void {
         HunterMager.instance = this;
@@ -24,6 +24,7 @@ export class HunterMager extends Component {
 
     loadHunter() {
         if (HunterInfo.Current >= HunterInfo.Max) return;
+        HunterInfo.Current += 1;
 
         const hunter = instantiate(this.hunter);
         hunter.parent = this.node;
@@ -32,14 +33,15 @@ export class HunterMager extends Component {
         const hunterCtrl = hunter.getComponent(HunterController);
         hunterCtrl.setPoint(this.point);
 
-        this.hunters.push(hunter)
-
-        HunterInfo.Current++;
+        // this.hunters.push(hunter)
     }
 
     recycleHunter(hunter: Node) {
-        this.hunters.splice(this.hunters.indexOf(hunter), 1);
+        // this.hunters.splice(this.hunters.indexOf(hunter), 1);
         HunterInfo.Current -= 1;
+        if (HunterInfo.Current < 0) {
+            HunterInfo.Current = 0;
+        }
         hunter.destroy();
     }
 }

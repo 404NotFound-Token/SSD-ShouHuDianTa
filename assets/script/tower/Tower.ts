@@ -20,14 +20,9 @@ export class Tower extends Component {
     public static ins: Tower = null;
 
     @property(Node) goldUI: Node = null;
-
-    @property(Node) level1AttackRangeTip: Node = null;
-    @property(Node) level2AttackRangeTip: Node = null;
-    // @property(Node) bulletFirePoint: Node = null;
     @property(Prefab) bullet: Prefab = null;
     @property(Node) hp: Node = null;
     @property(Node) bujian: Node = null;
-
 
     private gold: number = 0;
     private level_1_need_gold: number = 50;
@@ -124,7 +119,7 @@ export class Tower extends Component {
                     bullet.eulerAngles = new Vec3(0, yRotation, 0);
 
                     tween(bullet)
-                        .to(0.2, { worldPosition: zombie.node.worldPosition })
+                        .to(0.1, { worldPosition: zombie.node.worldPosition })
                         .call(() => {
                             if (zombie && isValid(zombie) && zombie.node && isValid(zombie.node)) {
                                 if (zombie.tx) {

@@ -38,27 +38,41 @@ export class GuideCtrl extends Component {
     }
 
     protected update(dt: number): void {
-        this.line.node.setWorldPosition(Player.ins.node.worldPosition);
-        let point: Node = null;
+        try {
+            this.line.node.setWorldPosition(Player.ins.node.worldPosition);
+            let point: Node = null;
 
-        if (Player.ins.meatList.length >= HunterInfo.Meat && HunterInfo.Current < HunterInfo.Max) {
-            point = this.points[2];
-        } else if (Tower.ins.level == 2) {
-            point = ZombieMager.ins.returnMinDistanceZombie(Player.ins.node).node;
-        } else if (Player.ins.wheatList.length >= 50) {
-            point = this.points[1];
-        } else if (Tower.ins.level == 1) {
-            point = this.points[0];
-        } else {
-            this.line.node.active = false;
+            if (Player.ins.meatList.length >= HunterInfo.Meat && HunterInfo.Current < HunterInfo.Max) {
+                point = this.points[2];
+            } else if (Tower.ins.level == 2) {
+                point = ZombieMager.ins.returnMinDistanceZombie(Player.ins.node).node;
+            } else if (Player.ins.wheatList.length >= 50) {
+                point = this.points[1];
+            } else if (Tower.ins.level == 1) {
+                point = this.points[0];
+            } else {
+                this.line.node.active = false;
+                this.JianTou.active = false;
+            }
+
+            if (point && isValid(point)) {
+                this.line.node.active = true;
+                this.JianTou.active = true;
+
+                this.line.init(point.worldPosition.clone());
+                this.JianTou.setWorldPosition(point.worldPosition.clone());
+            } else {
+                this.line.node.active = false;
+                this.JianTou.active = false;
+            }
+        } catch (error) {
+            if (error) {
+                console.log(error);
+                this.line.node.active = false;
+                this.JianTou.active = false;
+            }
         }
 
-        if (point && isValid(point)) {
-            this.line.node.active = true;
-            this.line.init(point.worldPosition.clone());
-        } else {
-            this.line.node.active = false;
-        }
     }
 }
 

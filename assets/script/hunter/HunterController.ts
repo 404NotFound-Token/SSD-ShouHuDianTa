@@ -60,6 +60,7 @@ export class HunterController extends Component {
 
     update(deltaTime: number) {
         // if (!this.currentTarget || !isValid(this.currentTarget))
+        if (GameMager.ins.GameEnd) return;
         if (this.state == HunterState.IDLE || this.state == HunterState.RUN) {
             // if (this.state == HunterState.RUN) {
 
